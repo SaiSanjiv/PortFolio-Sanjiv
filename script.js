@@ -1,15 +1,105 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- Preloader Removal ---
-    window.addEventListener('load', () => {
-        const preloader = document.getElementById('preloader');
-        if(preloader) {
+    // --- Cinematic Terminal Intro ---
+    const preloader = document.getElementById('preloader');
+    const terminalLinesEl = document.getElementById('terminal-lines');
+    const finalNameContainer = document.getElementById('final-name-container');
+    const typedNameEl = document.getElementById('typed-name');
+
+    const terminalText = [
+        "> Initializing Portfolio...",
+        "> Loading Developer Profile...",
+        "> Authenticating User...",
+
+        
+        "> Access Granted"
+    ];
+    const finalName = "SAI SANJIV";
+
+    let lineIndex = 0;
+    let charIndex = 0;
+    const terminalSpeed = 30; // fast typing for terminal
+    const terminalLineDelay = 400; // delay between lines
+    const finalTypingSpeed = 100; // slower typing for final name
+    const pauseBeforeFade = 1000;
+
+    function typeTerminal() {
+        if (!terminalLinesEl) return;
+        
+        if (lineIndex < terminalText.length) {
+            if (charIndex === 0) {
+                // Create a new line element
+                const lineEl = document.createElement('div');
+                lineEl.className = 'terminal-line';
+                lineEl.innerHTML = '<span class="term-text"></span><span class="typing-cursor" style="height: 1.2rem; background-color: var(--secondary); width: 0.6em; margin-left: 4px;"></span>';
+                terminalLinesEl.appendChild(lineEl);
+            }
+            
+            const currentLineText = terminalText[lineIndex];
+            const currentLineEls = terminalLinesEl.querySelectorAll('.terminal-line');
+            const activeLineEl = currentLineEls[currentLineEls.length - 1];
+            const textSpan = activeLineEl.querySelector('.term-text');
+            
+            if (charIndex < currentLineText.length) {
+                textSpan.textContent += currentLineText.charAt(charIndex);
+                charIndex++;
+                setTimeout(typeTerminal, terminalSpeed);
+            } else {
+                // Line complete
+                const cursorSpan = activeLineEl.querySelector('.typing-cursor');
+                if (cursorSpan) cursorSpan.remove(); // remove cursor from old line
+                
+                lineIndex++;
+                charIndex = 0;
+                
+                setTimeout(() => {
+                    if (lineIndex < terminalText.length) {
+                        typeTerminal();
+                    } else {
+                        // All terminal lines done.
+                        setTimeout(() => {
+                            terminalLinesEl.style.opacity = '0';
+                            setTimeout(() => {
+                                terminalLinesEl.style.display = 'none';
+                                finalNameContainer.style.display = 'block';
+                                // tiny reflow to ensure transition works
+                                void finalNameContainer.offsetWidth; 
+                                finalNameContainer.style.opacity = '1';
+                                typeFinalName();
+                            }, 300);
+                        }, 500);
+                    }
+                }, terminalLineDelay);
+            }
+        }
+    }
+
+    function typeFinalName() {
+        if (!typedNameEl) return;
+        if (charIndex < finalName.length) {
+            typedNameEl.textContent += finalName.charAt(charIndex);
+            charIndex++;
+            setTimeout(typeFinalName, finalTypingSpeed);
+        } else {
+            setTimeout(hidePreloader, pauseBeforeFade);
+        }
+    }
+
+    function hidePreloader() {
+        if (preloader && !preloader.classList.contains('hidden')) {
             preloader.classList.add('hidden');
             setTimeout(() => {
                 preloader.style.display = 'none';
-            }, 500);
+            }, 1000); 
         }
-    });
+    }
+
+    // Start typing effect shortly after JS parses
+    if (terminalLinesEl) {
+        setTimeout(typeTerminal, 400); // initial delay before starting terminal
+    } else {
+        window.addEventListener('load', hidePreloader);
+    }
 
     // --- Custom Cursor ---
     const cursor = document.querySelector('.cursor');
