@@ -13,15 +13,12 @@
 <body>
 
     <!-- Preloader -->
-    <div id="preloader">
-        <div class="terminal-container">
-            <div id="terminal-lines"></div>
-            <div id="final-name-container" style="display: none; opacity: 0;">
-                <div class="intro-typing">
-                    <span id="typed-name"></span><span class="typing-cursor"></span>
-                </div>
-            </div>
+        <div id="preloader">
+        <canvas id="intro-canvas"></canvas>
+        <div class="intro-typing-container">
+            <span class="intro-s-placeholder" style="color: transparent;">S</span><span id="typed-rest"></span><span class="typing-cursor" id="intro-cursor"></span>
         </div>
+    </div>
     </div>
 
     <!-- Particle Canvas Background -->
@@ -48,12 +45,17 @@
 
     <!-- Hero Section -->
     <section id="hero" class="hero reveal">
-        <p>HELLO, Everyone! </p>
-        <h1>I'm <span class="highlight">Sai Sanjiv R</span>.<br>Motivated Computer Science fresher.</h1>
-        <div class="hero-subtitle">
-            I have strong fundamentals in programming, data structures, and problem-solving. With hands-on experience in application development, automation, and data analysis, I am a quick learner seeking an entry-level role in a growth-oriented environment.
+        <div class="hero-content">
+            <p>HELLO, Everyone! </p>
+            <h1>I'm <span class="highlight">Sai Sanjiv R</span>.<br>Motivated Computer Science fresher.</h1>
+            <div class="hero-subtitle">
+                I have strong fundamentals in programming, data structures, and problem-solving. With hands-on experience in application development, automation, and data analysis, I am a quick learner seeking an entry-level role in a growth-oriented environment.
+            </div>
+            <a href="#projects" class="btn btn-magnetic">View My Work</a>
         </div>
-        <a href="#projects" class="btn btn-magnetic">View My Work</a>
+        <div class="hero-image-wrapper">
+            <img src="./assets/developer_profile.jpeg" alt="Sai Sanjiv Developer Profile" class="hero-profile-img">
+        </div>
     </section>
 
     <!-- Skills Section -->
